@@ -4,7 +4,7 @@
 
 | Item | Description |
 |---|---|
-| **Client** | Manufacturing company (US) |
+| **Client** | General Motors - Manufacturing company (US) |
 | **Duration** | 2010 – 2012 |
 | **Role** | ETL Developer — Enterprise Data Warehouse |
 | **Location** | Offshore (India) with a 1-year onsite assignment at the US client site (implementation and support) |
