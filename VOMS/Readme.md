@@ -29,34 +29,34 @@ Secured file-based integration for GM's Vehicle Ordering Management System by re
 
 ## 🏗️ Architecture
 
-​```mermaid
+```mermaid
 flowchart LR
-    subgraph Dealers[GM Dealer Network]
-        DMS[Dealer Management Systems]
+    subgraph Dealers["GM Dealer Network"]
+        DMS["Dealer Management Systems"]
     end
-    subgraph GMDC[GM Data Center]
-        VOMS[VOMS<br/>Vehicle Ordering Management]
-        CA[(Certificate Authority)]
-        LOG[(Audit Logs / SIEM)]
+    subgraph GMDC["GM Data Center"]
+        VOMS["VOMS<br/>Vehicle Ordering Management"]
+        CA[("Certificate Authority")]
+        LOG[("Audit Logs / SIEM")]
     end
-    subgraph DMZ[DMZ]
-        FTPS[FTPS Gateway<br/>TLS 1.2+ · Explicit AUTH TLS]
+    subgraph DMZ["DMZ"]
+        FTPS["FTPS Gateway<br/>TLS 1.2+ / Explicit AUTH TLS"]
     end
-    subgraph Downstream[Manufacturing & Partners]
-        PLANT[Plant Production Scheduling]
-        LOGI[Logistics / Vehicle Shipping]
-        FIN[Finance · Invoicing · Floorplan]
+    subgraph Downstream["Manufacturing & Partners"]
+        PLANT["Plant Production Scheduling"]
+        LOGI["Logistics / Vehicle Shipping"]
+        FIN["Finance / Invoicing / Floorplan"]
     end
 
-    DMS <-->|Orders · Changes · Status<br/>FTPS| FTPS
-    FTPS <-->|Order & status files| VOMS
-    VOMS <-->|Build schedule files| PLANT
-    VOMS <-->|Shipment / ETA files| LOGI
-    VOMS <-->|Invoice files| FIN
-    CA -.->|Certificates| FTPS
-    CA -.-> Dealers
+    DMS <-->|"Orders, Changes, Status (FTPS)"| FTPS
+    FTPS <-->|"Order & status files"| VOMS
+    VOMS <-->|"Build schedule files"| PLANT
+    VOMS <-->|"Shipment / ETA files"| LOGI
+    VOMS <-->|"Invoice files"| FIN
+    CA -.->|"Certificates"| FTPS
+    CA -.-> DMS
     FTPS --> LOG
-​```
+```
 
 ### Components
 
@@ -86,20 +86,20 @@ flowchart LR
 
 ### Vehicle Order File Flow
 
-​```mermaid
+```mermaid
 sequenceDiagram
     autonumber
-    participant D as Dealer (DMS)
+    participant D as Dealer DMS
     participant G as FTPS Gateway
     participant V as VOMS
     participant P as Plant Scheduling
-    D->>G: Connect · AUTH TLS · certificate check
+    D->>G: Connect, AUTH TLS, certificate check
     D->>G: Upload vehicle order file (PROT P, encrypted)
     G->>V: Hand-off order file (checksum verified)
-    V->>V: Validate order · allocate
+    V->>V: Validate order and allocate
     V->>P: Build request / schedule file
-    P-->>V: Production & VIN assignment
+    P-->>V: Production and VIN assignment
     V->>G: Order status / acknowledgement file
-    D->>G: Download status & invoice files
+    D->>G: Download status and invoice files
     G->>G: Audit log for every transfer
-​```
+```
