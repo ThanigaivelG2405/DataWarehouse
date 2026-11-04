@@ -10,7 +10,7 @@
 | **Problem** | Vehicle order, allocation, order-status and invoice files were exchanged between dealers, GM order systems, plants and downstream partners over plain FTP, exposing credentials and business-sensitive order and pricing data in clear text |
 | **Solution** | Implemented **FTPS (FTP over TLS)** secure server and client applications with certificate-based authentication, encrypted control and data channels, and full transfer auditing |
 | **Scope** | VOMS (GM data center), dealer systems (DMS), FTPS gateway, manufacturing and production scheduling, logistics/shipping and finance systems |
-| **My Role** | <Your role — e.g., Software Engineer: design, development of FTPS client/server components, certificate setup, testing and production rollout> |
+| **My Role** | Study the existing systems with requirement, tracking migration activities and resolved various issues of migration. |
 
 Secured file-based integration for GM's Vehicle Ordering Management System by replacing plain FTP with TLS-secured FTP (FTPS). Dealer orders, vehicle configurations, allocations, order-status updates and invoice files are now encrypted in transit, authenticated with digital certificates and fully audited. Existing batch schedules and order-to-delivery workflows kept running without interruption.
 
