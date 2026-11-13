@@ -30,42 +30,7 @@ Integration was built with **Informatica PowerCenter** (including Salesforce con
 
 ## 🏗️ Architecture
 
-```mermaid
-flowchart LR
-    subgraph Sources["Source Systems"]
-        SFDC["Salesforce (SFDC)<br/>HCP / HCO & Interactions"]
-        TXN[("Transactional Systems<br/>Spend, Expenses, Payments")]
-        REF["Reference Data<br/>NPI, State Licenses"]
-    end
-    subgraph ETL1["Informatica PowerCenter"]
-        E1["Extract, Cleanse,<br/>Standardize"]
-    end
-    subgraph MDM["MDM System (Oracle)"]
-        MATCH["Match & Merge"]
-        GOLD[("Golden Records<br/>HCP / HCO Master")]
-        SPEND[("Spend linked to<br/>Master Records")]
-        MATCH --> GOLD --> SPEND
-    end
-    subgraph ETL2["Informatica PowerCenter"]
-        E2["Apply Reporting Rules<br/>Federal & State"]
-    end
-    subgraph Reports["Regulatory Reporting"]
-        FED["Federal Report<br/>CMS Open Payments"]
-        ST["State Reports<br/>Reportable States"]
-    end
-    SH["Unix Shell Scripts<br/>Scheduling & Control"]
-
-    SFDC --> E1
-    TXN --> E1
-    REF --> E1
-    E1 --> MATCH
-    SPEND --> E2
-    E2 --> FED
-    E2 --> ST
-    GOLD -.->|"Updated master data"| SFDC
-    SH -.->|"pmcmd workflow control"| ETL1
-    SH -.-> ETL2
-```
+![Architecture diagram](images/architecture.png)
 
 ### Components
 
@@ -81,24 +46,7 @@ flowchart LR
 
 ### Reporting Flow
 
-```mermaid
-sequenceDiagram
-    autonumber
-    participant SF as Salesforce
-    participant TX as Transactional Systems
-    participant INF as Informatica
-    participant MDM as MDM (Oracle)
-    participant RPT as Federal / State Reports
-    SF->>INF: HCP / HCO profiles and interactions
-    TX->>INF: Spend and payment transactions
-    INF->>MDM: Load cleansed data
-    MDM->>MDM: Match and merge into golden records
-    MDM->>MDM: Link each transaction to a provider
-    INF->>MDM: Read provider-linked spend
-    INF->>INF: Apply federal and state reporting rules
-    INF->>RPT: Generate submission files
-    RPT-->>MDM: Review, disputes and corrections
-```
+![Process flow diagram](images/flow.png)
 
 ### Design Highlights
 
